@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using SalesStore.WebAPI.Models;
 using SalesStore.WebAPI.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SalesStore.WebAPI.Controllers;
 
@@ -13,5 +13,14 @@ public class ProductsController : ControllerBase
     public ProductsController(SalesStoreDbContext context)
     {
         _context = context;
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateProductAsync([FromBody] Product product)
+    {
+        await _context.Products.AddAsync(product);
+        await _context.SaveChangesAsync();
+
+        return Ok(product);
     }
 }
