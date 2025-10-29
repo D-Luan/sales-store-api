@@ -1,6 +1,7 @@
 ﻿using SalesStore.WebAPI.Models;
 using SalesStore.WebAPI.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace SalesStore.WebAPI.Controllers;
 
@@ -22,5 +23,13 @@ public class ProductsController : ControllerBase
         await _context.SaveChangesAsync();
 
         return Ok(product);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllProductsAsync()
+    {
+        var products = await _context.Products.ToListAsync();
+
+        return Ok(products);
     }
 }
