@@ -45,4 +45,24 @@ public class ProductsController : ControllerBase
 
         return Ok(product);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateProductAsync(int id, [FromBody] Product newProduct)
+    {
+        var product = await _context.Products.FindAsync(id);
+
+        if(product == null)
+        {
+            return NotFound();
+        }
+
+        product.Name = newProduct.Name;
+        product.Price = newProduct.Price;
+        product.Quantity = newProduct.Quantity;
+        product.Category = newProduct.Category;
+
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }
