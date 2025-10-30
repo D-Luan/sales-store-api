@@ -2,7 +2,6 @@
 using SalesStore.WebAPI.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 
 namespace SalesStore.WebAPI.Controllers;
 
@@ -23,7 +22,10 @@ public class ProductsController : ControllerBase
         await _context.Products.AddAsync(product);
         await _context.SaveChangesAsync();
 
-        return Ok(product);
+        return CreatedAtAction(
+            "GetProductById",
+            new { id = product.Id },
+            product);
     }
 
     [HttpGet]
@@ -34,7 +36,7 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id}", Name = "GetProductById")]
     public async Task<IActionResult> GetProductByIdAsync(int id)
     {
         var product = await _context.Products.FindAsync(id);
