@@ -87,7 +87,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProductAsync(int id, [FromBody] Product newProduct)
+    public async Task<IActionResult> UpdateProductAsync(int id, UpdateProductRequest productUpdate)
     {
         var product = await _context.Products.FindAsync(id);
 
@@ -96,10 +96,10 @@ public class ProductsController : ControllerBase
             return NotFound();
         }
 
-        product.Name = newProduct.Name;
-        product.Price = newProduct.Price;
-        product.Quantity = newProduct.Quantity;
-        product.Category = newProduct.Category;
+        product.Name = productUpdate.Name;
+        product.Price = productUpdate.Price;
+        product.Quantity = productUpdate.Quantity;
+        product.Category = productUpdate.Category;
 
         await _context.SaveChangesAsync();
 
