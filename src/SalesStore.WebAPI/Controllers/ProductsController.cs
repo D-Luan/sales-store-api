@@ -64,16 +64,26 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id}", Name = "GetProductById")]
-    public async Task<IActionResult> GetProductByIdAsync(int id)
+    public async Task<ActionResult<ProductResponse>> GetProductByIdAsync(int id)
     {
-        var product = await _context.Products.FindAsync(id);
+        var productResponse = await _context.Products
+            .Where(p => p.Id == id)
+            .Select(p => new ProductResponse
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Quantity = p.Quantity,
+                Category = p.Category
+            })
+            .SingleOrDefaultAsync();
 
-        if (product == null)
+        if (productResponse == null)
         {
             return NotFound();
         }
 
-        return Ok(product);
+        return Ok(productResponse);
     }
 
     [HttpPut("{id}")]
