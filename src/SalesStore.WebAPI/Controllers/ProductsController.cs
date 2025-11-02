@@ -18,15 +18,32 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProductAsync([FromBody] Product product)
+    public async Task<ActionResult<ProductResponse>> CreateProductAsync(CreateProductRequest productRequest)
     {
+        var product = new Product
+        {
+            Name = productRequest.Name,
+            Price = productRequest.Price,
+            Quantity = productRequest.Quantity,
+            Category = productRequest.Category
+        };
+
         await _context.Products.AddAsync(product);
         await _context.SaveChangesAsync();
 
+        var productResponse = new ProductResponse
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Price = product.Price,
+            Quantity = product.Quantity,
+            Category = product.Category
+        };
+
         return CreatedAtAction(
             "GetProductById",
-            new { id = product.Id },
-            product);
+            new { id = productResponse.Id },
+            productResponse);
     }
 
     [HttpGet]
