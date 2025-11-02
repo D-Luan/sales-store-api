@@ -1,5 +1,6 @@
 ﻿using SalesStore.WebAPI.Models;
 using SalesStore.WebAPI.Data;
+using SalesStore.WebAPI.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,11 +30,20 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAllProductsAsync()
+    public async Task<ActionResult<List<ProductResponse>>> GetAllProductsAsync()
     {
-        var products = await _context.Products.ToListAsync();
+        var productsResponse = await _context.Products
+            .Select(p => new ProductResponse
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Quantity = p.Quantity,
+                Category = p.Category
+            })
+            .ToListAsync();
 
-        return Ok(products);
+        return Ok(productsResponse);
     }
 
     [HttpGet("{id}", Name = "GetProductById")]
