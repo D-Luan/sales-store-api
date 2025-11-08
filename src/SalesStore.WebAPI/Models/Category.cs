@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SalesStore.WebAPI.Models;
 
-public class Product
+public class Category
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,12 +13,10 @@ public class Product
     [StringLength(100)]
     public string Name { get; set; } = string.Empty;
 
-    [Column(TypeName = "decimal(18, 2)")]
-    public decimal Price { get; set; }
+    public ICollection<Product> Products { get; set; }
 
-    public int Quantity { get; set; }
-
-    public int CategoryId { get; set; }
-
-    public Category Category { get; set; } = null!;
+    public Category()
+    {
+        Products = new HashSet<Product>();
+    }
 }

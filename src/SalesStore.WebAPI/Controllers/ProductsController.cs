@@ -25,7 +25,7 @@ public class ProductsController : ControllerBase
             Name = productRequest.Name,
             Price = productRequest.Price,
             Quantity = productRequest.Quantity,
-            Category = productRequest.Category
+            CategoryId = productRequest.CategoryId
         };
 
         await _context.Products.AddAsync(product);
@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
             Name = product.Name,
             Price = product.Price,
             Quantity = product.Quantity,
-            Category = product.Category
+            CategoryId = product.CategoryId
         };
 
         return CreatedAtAction(
@@ -56,7 +56,7 @@ public class ProductsController : ControllerBase
                 Name = p.Name,
                 Price = p.Price,
                 Quantity = p.Quantity,
-                Category = p.Category
+                CategoryId = p.CategoryId
             })
             .ToListAsync();
 
@@ -74,7 +74,7 @@ public class ProductsController : ControllerBase
                 Name = p.Name,
                 Price = p.Price,
                 Quantity = p.Quantity,
-                Category = p.Category
+                CategoryId = p.CategoryId
             })
             .SingleOrDefaultAsync();
 
@@ -99,7 +99,7 @@ public class ProductsController : ControllerBase
         product.Name = productUpdate.Name;
         product.Price = productUpdate.Price;
         product.Quantity = productUpdate.Quantity;
-        product.Category = productUpdate.Category;
+        product.CategoryId = productUpdate.CategoryId;
 
         await _context.SaveChangesAsync();
 
